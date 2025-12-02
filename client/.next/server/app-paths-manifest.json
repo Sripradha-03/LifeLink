@@ -1,0 +1,10 @@
+{
+  "/page": "app/page.js",
+  "/blood-centers/page": "app/blood-centers/page.js",
+  "/camps/page": "app/camps/page.js",
+  "/admin/dashboard/page": "app/admin/dashboard/page.js",
+  "/notifications/page": "app/notifications/page.js",
+  "/donor/login/page": "app/donor/login/page.js",
+  "/blood-request/page": "app/blood-request/page.js",
+  "/donor/profile/page": "app/donor/profile/page.js"
+}
