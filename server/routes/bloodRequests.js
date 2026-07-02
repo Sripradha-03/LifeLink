@@ -160,6 +160,9 @@ router.post('/', [
       matchingDonors
     });
   } catch (error) {
+    if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(400).json({ message: 'Validation error', errors: error.errors.map(e => e.message) });
+    }
     console.error('Blood request error:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }

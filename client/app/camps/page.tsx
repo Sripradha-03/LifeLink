@@ -120,7 +120,7 @@ export default function Camps() {
               <div key={idx} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
                 <h3 className="text-xl font-bold mb-2 text-red-600">{camp.campName}</h3>
                 <p className="text-gray-600 mb-4">{camp.organizationName}</p>
-                
+
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center text-gray-600">
                     <Calendar className="w-4 h-4 mr-2" />
@@ -137,12 +137,29 @@ export default function Camps() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className={`px-3 py-1 rounded-full text-sm ${
-                    camp.status === 'Approved' ? 'bg-green-100 text-green-800' :
-                    camp.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {camp.status}
+                  <span className={`px-3 py-1 rounded-full text-sm ${(() => {
+                      const campEnd = new Date(camp.campDate);
+                      if (camp.endTime) {
+                        const [hours, minutes] = camp.endTime.split(':');
+                        campEnd.setHours(parseInt(hours), parseInt(minutes), 0);
+                      } else {
+                        campEnd.setHours(23, 59, 59);
+                      }
+                      const isCompleted = new Date() > campEnd;
+                      return isCompleted ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
+                    })()
+                    }`}>
+                    {(() => {
+                      const campEnd = new Date(camp.campDate);
+                      if (camp.endTime) {
+                        const [hours, minutes] = camp.endTime.split(':');
+                        campEnd.setHours(parseInt(hours), parseInt(minutes), 0);
+                      } else {
+                        campEnd.setHours(23, 59, 59);
+                      }
+                      const isCompleted = new Date() > campEnd;
+                      return isCompleted ? 'Completed' : 'Pending';
+                    })()}
                   </span>
                   {camp.estimatedParticipants && (
                     <span className="text-gray-600 text-sm">

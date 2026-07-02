@@ -135,6 +135,9 @@ router.post('/', async (req, res) => {
     const center = await BloodCenter.create(centerData);
     res.status(201).json({ message: 'Blood center created successfully', center });
   } catch (error) {
+    if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(400).json({ message: 'Validation error', errors: error.errors.map(e => e.message) });
+    }
     console.error('Error creating blood center:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }

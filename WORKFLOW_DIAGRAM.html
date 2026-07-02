@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLink - System Workflow Diagram</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            padding: 40px;
+            overflow-x: auto;
+        }
+
+        .container {
+            background: white;
+            border: 2px solid #333;
+            padding: 40px;
+            min-width: 1700px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #000;
+            margin-bottom: 20px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        svg {
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Process boxes */
+        .process-box {
+            fill: #4A90E2;
+            stroke: #000;
+            stroke-width: 2;
+        }
+
+        /* Decision diamonds */
+        .decision-diamond {
+            fill: #F5A623;
+            stroke: #000;
+            stroke-width: 2;
+        }
+
+        /* Start/End ovals */
+        .terminal-oval {
+            fill: #7ED321;
+            stroke: #000;
+            stroke-width: 2;
+        }
+
+        /* Data/Database parallelograms */
+        .data-box {
+            fill: #BD10E0;
+            stroke: #000;
+            stroke-width: 2;
+        }
+
+        /* External process boxes */
+        .external-box {
+            fill: #FF6B6B;
+            stroke: #000;
+            stroke-width: 2;
+        }
+
+        /* Arrows */
+        .arrow-line {
+            stroke: #000;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+
+        /* Text styles */
+        .box-text {
+            font-size: 12px;
+            fill: #000;
+            text-anchor: middle;
+            font-weight: bold;
+        }
+
+        .small-text {
+            font-size: 10px;
+            fill: #000;
+            text-anchor: middle;
+        }
+
+        .label-text {
+            font-size: 11px;
+            fill: #000;
+            font-weight: bold;
+        }
+
+        .title-text {
+            font-size: 16px;
+            fill: #000;
+            font-weight: bold;
+            text-anchor: middle;
+        }
+
+        .legend-text {
+            font-size: 12px;
+            fill: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>LifeLink - System Workflow Diagrams</h1>
+        <p class="subtitle">Complete System Process Flows</p>
+
+        <svg width="1600" height="3400" xmlns="http://www.w3.org/2000/svg">
+            <!-- Define arrowhead marker -->
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#000" />
+                </marker>
+            </defs>
+
+            <!-- MAIN WORKFLOW: Emergency Blood Request -->
+            <text class="title-text" x="400" y="30">Emergency Blood Request Workflow</text>
+
+            <!-- Start -->
+            <ellipse class="terminal-oval" cx="400" cy="70" rx="80" ry="30" />
+            <text class="box-text" x="400" y="75">START</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="400" y1="100" x2="400" y2="140" />
+
+            <!-- User submits blood request -->
+            <rect class="process-box" x="300" y="140" width="200" height="60" rx="5" />
+            <text class="box-text" x="400" y="165">User Submits</text>
+            <text class="box-text" x="400" y="185">Blood Request Form</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="400" y1="200" x2="400" y2="240" />
+
+            <!-- Check if emergency -->
+            <polygon class="decision-diamond" points="400,240 500,290 400,340 300,290" />
+            <text class="box-text" x="400" y="285">Is Emergency</text>
+            <text class="box-text" x="400" y="300">Request?</text>
+
+            <!-- YES path -->
+            <line class="arrow-line" x1="500" y1="290" x2="600" y2="290" />
+            <text class="label-text" x="530" y="285">YES</text>
+
+            <!-- NO path -->
+            <line class="arrow-line" x1="400" y1="340" x2="400" y2="380" />
+            <text class="label-text" x="420" y="365">NO</text>
+
+            <!-- Emergency: Find compatible donors -->
+            <rect class="process-box" x="600" y="260" width="200" height="60" rx="5" />
+            <text class="box-text" x="700" y="280">PostGIS Query:</text>
+            <text class="box-text" x="700" y="295">Find Compatible Donors</text>
+            <text class="small-text" x="700" y="310">(within 10km radius)</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="700" y1="320" x2="700" y2="360" />
+
+            <!-- Check blood group compatibility -->
+            <rect class="data-box" x="600" y="360" width="200" height="60" rx="5" />
+            <text class="box-text" x="700" y="380">Check Blood Group</text>
+            <text class="box-text" x="700" y="395">Compatibility Matrix</text>
+            <text class="small-text" x="700" y="410">isActive = true</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="700" y1="420" x2="700" y2="460" />
+
+            <!-- Send SMS via Twilio -->
+            <rect class="external-box" x="600" y="460" width="200" height="60" rx="5" />
+            <text class="box-text" x="700" y="480">Twilio SMS Service:</text>
+            <text class="box-text" x="700" y="495">Send Emergency Alert</text>
+            <text class="small-text" x="700" y="510">to matched donors</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="700" y1="520" x2="700" y2="560" />
+
+            <!-- Create REQUEST_DONORS records -->
+            <rect class="data-box" x="600" y="560" width="200" height="60" rx="5" />
+            <text class="box-text" x="700" y="580">Create Records in</text>
+            <text class="box-text" x="700" y="595">REQUEST_DONORS</text>
+            <text class="small-text" x="700" y="610">Junction Table</text>
+
+            <!-- Arrow merging back -->
+            <line class="arrow-line" x1="700" y1="620" x2="700" y2="680" />
+            <line class="arrow-line" x1="700" y1="680" x2="400" y2="680" />
+            <line class="arrow-line" x1="400" y1="680" x2="400" y2="720" />
+
+            <!-- Non-emergency: Store request -->
+            <rect class="data-box" x="300" y="380" width="200" height="60" rx="5" />
+            <text class="box-text" x="400" y="400">Store Request in</text>
+            <text class="box-text" x="400" y="415">BLOOD_REQUESTS</text>
+            <text class="small-text" x="400" y="430">status = 'Pending'</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="400" y1="440" x2="400" y2="720" />
+
+            <!-- Admin notification -->
+            <rect class="process-box" x="300" y="720" width="200" height="60" rx="5" />
+            <text class="box-text" x="400" y="740">Admin Dashboard</text>
+            <text class="box-text" x="400" y="755">Notification</text>
+            <text class="small-text" x="400" y="770">Real-time update</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="400" y1="780" x2="400" y2="820" />
+
+            <!-- Donor response check -->
+            <polygon class="decision-diamond" points="400,820 500,870 400,920 300,870" />
+            <text class="box-text" x="400" y="865">Donor</text>
+            <text class="box-text" x="400" y="880">Responds?</text>
+
+            <!-- YES path -->
+            <line class="arrow-line" x1="500" y1="870" x2="600" y2="870" />
+            <text class="label-text" x="530" y="865">YES</text>
+
+            <!-- Update request status -->
+            <rect class="process-box" x="600" y="840" width="200" height="60" rx="5" />
+            <text class="box-text" x="700" y="860">Update Request</text>
+            <text class="box-text" x="700" y="875">status = 'Accepted'</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="700" y1="900" x2="700" y2="940" />
+            <line class="arrow-line" x1="700" y1="940" x2="400" y2="940" />
+            <line class="arrow-line" x1="400" y1="940" x2="400" y2="980" />
+
+            <!-- NO path - wait -->
+            <line class="arrow-line" x1="400" y1="920" x2="400" y2="980" />
+            <text class="label-text" x="420" y="950">NO</text>
+
+            <!-- Admin marks complete -->
+            <rect class="process-box" x="300" y="980" width="200" height="60" rx="5" />
+            <text class="box-text" x="400" y="1000">Admin Marks</text>
+            <text class="box-text" x="400" y="1015">Request Complete</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="400" y1="1040" x2="400" y2="1080" />
+
+            <!-- End -->
+            <ellipse class="terminal-oval" cx="400" cy="1110" rx="80" ry="30" />
+            <text class="box-text" x="400" y="1115">END</text>
+
+
+            <!-- DONOR REGISTRATION WORKFLOW (Right side) -->
+            <text class="title-text" x="1000" y="30">Donor Registration Workflow</text>
+
+            <!-- Start -->
+            <ellipse class="terminal-oval" cx="1000" cy="70" rx="80" ry="30" />
+            <text class="box-text" x="1000" y="75">START</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="100" x2="1000" y2="140" />
+
+            <!-- Fill registration form -->
+            <rect class="process-box" x="900" y="140" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="160">Donor Fills</text>
+            <text class="box-text" x="1000" y="175">Registration Form</text>
+            <text class="small-text" x="1000" y="190">/donor/register</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="200" x2="1000" y2="240" />
+
+            <!-- Capture geolocation -->
+            <rect class="process-box" x="900" y="240" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="260">Capture Geolocation</text>
+            <text class="small-text" x="1000" y="275">(latitude, longitude)</text>
+            <text class="small-text" x="1000" y="290">Browser Geolocation API</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="300" x2="1000" y2="340" />
+
+            <!-- Hash password -->
+            <rect class="process-box" x="900" y="340" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="360">Hash Password</text>
+            <text class="small-text" x="1000" y="375">bcryptjs (10 rounds)</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="400" x2="1000" y2="440" />
+
+            <!-- Store in database -->
+            <rect class="data-box" x="900" y="440" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="460">Store in DONORS</text>
+            <text class="small-text" x="1000" y="475">status = 'Pending'</text>
+            <text class="small-text" x="1000" y="490">isActive = true</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="500" x2="1000" y2="540" />
+
+            <!-- Admin approval -->
+            <polygon class="decision-diamond" points="1000,540 1100,590 1000,640 900,590" />
+            <text class="box-text" x="1000" y="585">Admin</text>
+            <text class="box-text" x="1000" y="600">Approves?</text>
+
+            <!-- YES path -->
+            <line class="arrow-line" x1="1100" y1="590" x2="1200" y2="590" />
+            <text class="label-text" x="1130" y="585">YES</text>
+
+            <!-- Update status to Approved -->
+            <rect class="process-box" x="1200" y="560" width="200" height="60" rx="5" />
+            <text class="box-text" x="1300" y="580">Update Status</text>
+            <text class="box-text" x="1300" y="595">status = 'Approved'</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1300" y1="620" x2="1300" y2="660" />
+            <line class="arrow-line" x1="1300" y1="660" x2="1000" y2="660" />
+            <line class="arrow-line" x1="1000" y1="660" x2="1000" y2="700" />
+
+            <!-- NO path -->
+            <line class="arrow-line" x1="1000" y1="640" x2="1000" y2="700" />
+            <text class="label-text" x="1020" y="670">NO</text>
+
+            <!-- End -->
+            <ellipse class="terminal-oval" cx="1000" cy="730" rx="80" ry="30" />
+            <text class="box-text" x="1000" y="735">END</text>
+
+
+            <!-- DONOR ELIGIBILITY CHECK WORKFLOW (Right side, lower) -->
+            <text class="title-text" x="1000" y="830">Donor Eligibility Auto-Check</text>
+            <text class="small-text" x="1000" y="850">(Runs every hour via scheduled task)</text>
+
+            <!-- Start -->
+            <ellipse class="terminal-oval" cx="1000" cy="890" rx="80" ry="30" />
+            <text class="box-text" x="1000" y="895">START</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="920" x2="1000" y2="960" />
+
+            <!-- Query inactive donors -->
+            <rect class="data-box" x="900" y="960" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="980">Query DONORS</text>
+            <text class="small-text" x="1000" y="995">isActive = false</text>
+            <text class="small-text" x="1000" y="1010">lastDonationDate != null</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="1020" x2="1000" y2="1060" />
+
+            <!-- Calculate eligibility -->
+            <rect class="process-box" x="900" y="1060" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="1075">Calculate Eligibility</text>
+            <text class="small-text" x="1000" y="1090">Male: 3 months</text>
+            <text class="small-text" x="1000" y="1105">Female: 4 months</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="1120" x2="1000" y2="1160" />
+
+            <!-- Check if eligible -->
+            <polygon class="decision-diamond" points="1000,1160 1100,1210 1000,1260 900,1210" />
+            <text class="box-text" x="1000" y="1205">Eligible</text>
+            <text class="box-text" x="1000" y="1220">Now?</text>
+
+            <!-- YES path -->
+            <line class="arrow-line" x1="1100" y1="1210" x2="1200" y2="1210" />
+            <text class="label-text" x="1130" y="1205">YES</text>
+
+            <!-- Reactivate donor -->
+            <rect class="process-box" x="1200" y="1180" width="200" height="60" rx="5" />
+            <text class="box-text" x="1300" y="1200">Update Donor</text>
+            <text class="box-text" x="1300" y="1215">isActive = true</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1300" y1="1240" x2="1300" y2="1280" />
+            <line class="arrow-line" x1="1300" y1="1280" x2="1000" y2="1280" />
+            <line class="arrow-line" x1="1000" y1="1280" x2="1000" y2="1320" />
+
+            <!-- NO path -->
+            <line class="arrow-line" x1="1000" y1="1260" x2="1000" y2="1320" />
+            <text class="label-text" x="1020" y="1290">NO</text>
+
+            <!-- End -->
+            <ellipse class="terminal-oval" cx="1000" cy="1350" rx="80" ry="30" />
+            <text class="box-text" x="1000" y="1355">END</text>
+
+
+            <!-- BLOOD STOCK UPDATE WORKFLOW (Left side, lower) -->
+            <text class="title-text" x="400" y="1230">Blood Stock Update Workflow</text>
+
+            <!-- Start -->
+            <ellipse class="terminal-oval" cx="400" cy="1270" rx="80" ry="30" />
+            <text class="box-text" x="400" y="1275">START</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="400" y1="1300" x2="400" y2="1340" />
+
+            <!-- Blood center login -->
+            <rect class="process-box" x="300" y="1340" width="200" height="60" rx="5" />
+            <text class="box-text" x="400" y="1360">Blood Center Login</text>
+            <text class="small-text" x="400" y="1375">username + password</text>
+            <text class="small-text" x="400" y="1390">JWT Authentication</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="400" y1="1400" x2="400" y2="1440" />
+
+            <!-- Select blood group -->
+            <rect class="process-box" x="300" y="1440" width="200" height="60" rx="5" />
+            <text class="box-text" x="400" y="1460">Select Blood Group</text>
+            <text class="box-text" x="400" y="1475">& Component Type</text>
+            <text class="small-text" x="400" y="1490">(A+, Whole Blood, etc.)</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="400" y1="1500" x2="400" y2="1540" />
+
+            <!-- Enter units available -->
+            <rect class="process-box" x="300" y="1540" width="200" height="60" rx="5" />
+            <text class="box-text" x="400" y="1560">Enter Units Available</text>
+            <text class="box-text" x="400" y="1575">& Expiry Date</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="400" y1="1600" x2="400" y2="1640" />
+
+            <!-- Check if record exists -->
+            <polygon class="decision-diamond" points="400,1640 500,1690 400,1740 300,1690" />
+            <text class="box-text" x="400" y="1685">Stock Record</text>
+            <text class="box-text" x="400" y="1700">Exists?</text>
+
+            <!-- YES path - Update -->
+            <line class="arrow-line" x1="500" y1="1690" x2="600" y2="1690" />
+            <text class="label-text" x="530" y="1685">YES</text>
+
+            <rect class="data-box" x="600" y="1660" width="200" height="60" rx="5" />
+            <text class="box-text" x="700" y="1680">UPDATE</text>
+            <text class="box-text" x="700" y="1695">BLOOD_STOCKS</text>
+            <text class="small-text" x="700" y="1710">Set new units & expiry</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="700" y1="1720" x2="700" y2="1760" />
+            <line class="arrow-line" x1="700" y1="1760" x2="400" y2="1760" />
+            <line class="arrow-line" x1="400" y1="1760" x2="400" y2="1800" />
+
+            <!-- NO path - Create -->
+            <line class="arrow-line" x1="400" y1="1740" x2="400" y2="1800" />
+            <text class="label-text" x="420" y="1770">NO</text>
+
+            <rect class="data-box" x="300" y="1800" width="200" height="60" rx="5" />
+            <text class="box-text" x="400" y="1820">INSERT INTO</text>
+            <text class="box-text" x="400" y="1835">BLOOD_STOCKS</text>
+            <text class="small-text" x="400" y="1850">Create new record</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="400" y1="1860" x2="400" y2="1900" />
+
+            <!-- Send notification -->
+            <rect class="process-box" x="300" y="1900" width="200" height="60" rx="5" />
+            <text class="box-text" x="400" y="1920">Create Notification</text>
+            <text class="small-text" x="400" y="1935">Blood stock updated</text>
+            <text class="small-text" x="400" y="1950">Notify admin dashboard</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="400" y1="1960" x2="400" y2="2000" />
+
+            <!-- End -->
+            <ellipse class="terminal-oval" cx="400" cy="2030" rx="80" ry="30" />
+            <text class="box-text" x="400" y="2035">END</text>
+
+
+            <!-- BLOOD AVAILABILITY SEARCH WORKFLOW (Right side, lower) -->
+            <text class="title-text" x="1000" y="1450">Blood Availability Search</text>
+
+            <!-- Start -->
+            <ellipse class="terminal-oval" cx="1000" cy="1490" rx="80" ry="30" />
+            <text class="box-text" x="1000" y="1495">START</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="1520" x2="1000" y2="1560" />
+
+            <!-- User enters search criteria -->
+            <rect class="process-box" x="900" y="1560" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="1580">User Enters Search</text>
+            <text class="small-text" x="1000" y="1595">Blood Group + Location</text>
+            <text class="small-text" x="1000" y="1610">/blood-availability</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="1620" x2="1000" y2="1660" />
+
+            <!-- Query blood stocks -->
+            <rect class="data-box" x="900" y="1660" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="1680">Query BLOOD_STOCKS</text>
+            <text class="small-text" x="1000" y="1695">JOIN BLOOD_CENTERS</text>
+            <text class="small-text" x="1000" y="1710">Filter by blood group</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="1720" x2="1000" y2="1760" />
+
+            <!-- PostGIS proximity search -->
+            <rect class="process-box" x="900" y="1760" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="1780">PostGIS Search:</text>
+            <text class="box-text" x="1000" y="1795">Nearest Blood Centers</text>
+            <text class="small-text" x="1000" y="1810">Sort by distance</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="1820" x2="1000" y2="1860" />
+
+            <!-- Check results -->
+            <polygon class="decision-diamond" points="1000,1860 1100,1910 1000,1960 900,1910" />
+            <text class="box-text" x="1000" y="1905">Stock</text>
+            <text class="box-text" x="1000" y="1920">Found?</text>
+
+            <!-- YES path -->
+            <line class="arrow-line" x1="1100" y1="1910" x2="1200" y2="1910" />
+            <text class="label-text" x="1130" y="1905">YES</text>
+
+            <rect class="process-box" x="1200" y="1880" width="200" height="60" rx="5" />
+            <text class="box-text" x="1300" y="1900">Display Results</text>
+            <text class="small-text" x="1300" y="1915">Center name, units,</text>
+            <text class="small-text" x="1300" y="1930">distance, contact</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1300" y1="1940" x2="1300" y2="1980" />
+            <line class="arrow-line" x1="1300" y1="1980" x2="1000" y2="1980" />
+            <line class="arrow-line" x1="1000" y1="1980" x2="1000" y2="2020" />
+
+            <!-- NO path -->
+            <line class="arrow-line" x1="1000" y1="1960" x2="1000" y2="2020" />
+            <text class="label-text" x="1020" y="1990">NO</text>
+
+            <rect class="process-box" x="900" y="2020" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="2040">Show Message:</text>
+            <text class="small-text" x="1000" y="2055">"No stock available"</text>
+            <text class="small-text" x="1000" y="2070">Suggest blood request</text>
+
+            <!-- Arrow -->
+            <line class="arrow-line" x1="1000" y1="2080" x2="1000" y2="2120" />
+
+            <!-- End -->
+            <ellipse class="terminal-oval" cx="1000" cy="2150" rx="80" ry="30" />
+            <text class="box-text" x="1000" y="2155">END</text>
+
+            <!-- ADMIN MANAGEMENT WORKFLOW (Centered) -->
+            <text class="title-text" x="800" y="2200">Admin Management Workflow</text>
+
+            <!-- Start -->
+            <ellipse class="terminal-oval" cx="800" cy="2240" rx="80" ry="30" />
+            <text class="box-text" x="800" y="2245">START</text>
+
+            <line class="arrow-line" x1="800" y1="2270" x2="800" y2="2310" />
+
+            <!-- Admin Login -->
+            <rect class="process-box" x="700" y="2310" width="200" height="60" rx="5" />
+            <text class="box-text" x="800" y="2330">Admin Login</text>
+            <text class="small-text" x="800" y="2345">/admin/login</text>
+
+            <line class="arrow-line" x1="800" y1="2370" x2="800" y2="2410" />
+
+            <!-- Dashboard -->
+            <rect class="process-box" x="700" y="2410" width="200" height="60" rx="5" />
+            <text class="box-text" x="800" y="2430">View Dashboard</text>
+            <text class="small-text" x="800" y="2445">Stats & Pending Items</text>
+
+            <line class="arrow-line" x1="800" y1="2470" x2="800" y2="2510" />
+
+            <!-- Decision: Action Type -->
+            <polygon class="decision-diamond" points="800,2510 900,2560 800,2610 700,2560" />
+            <text class="box-text" x="800" y="2550">Select</text>
+            <text class="box-text" x="800" y="2565">Action</text>
+
+            <!-- Path 1: Manage Donors (Left) -->
+            <line class="arrow-line" x1="700" y1="2560" x2="600" y2="2560" />
+            <line class="arrow-line" x1="600" y1="2560" x2="600" y2="2600" />
+
+            <rect class="process-box" x="500" y="2600" width="200" height="60" rx="5" />
+            <text class="box-text" x="600" y="2620">Review Donors</text>
+            <text class="small-text" x="600" y="2635">Verify details</text>
+
+            <line class="arrow-line" x1="600" y1="2660" x2="600" y2="2700" />
+
+            <rect class="data-box" x="500" y="2700" width="200" height="60" rx="5" />
+            <text class="box-text" x="600" y="2720">Update DONORS</text>
+            <text class="small-text" x="600" y="2735">status = 'Approved'/'Rejected'</text>
+
+            <!-- Path 2: Manage Camps (Right) -->
+            <line class="arrow-line" x1="900" y1="2560" x2="1000" y2="2560" />
+            <line class="arrow-line" x1="1000" y1="2560" x2="1000" y2="2600" />
+
+            <rect class="process-box" x="900" y="2600" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="2620">Review Camps</text>
+            <text class="small-text" x="1000" y="2635">Verify organization</text>
+
+            <line class="arrow-line" x1="1000" y1="2660" x2="1000" y2="2700" />
+
+            <rect class="data-box" x="900" y="2700" width="200" height="60" rx="5" />
+            <text class="box-text" x="1000" y="2720">Update CAMPS</text>
+            <text class="small-text" x="1000" y="2735">status = 'Approved'/'Rejected'</text>
+
+            <!-- Merge back -->
+            <line class="arrow-line" x1="600" y1="2760" x2="600" y2="2800" />
+            <line class="arrow-line" x1="600" y1="2800" x2="800" y2="2800" />
+
+            <line class="arrow-line" x1="1000" y1="2760" x2="1000" y2="2800" />
+            <line class="arrow-line" x1="1000" y1="2800" x2="800" y2="2800" />
+
+            <line class="arrow-line" x1="800" y1="2800" x2="800" y2="2840" />
+
+            <!-- End -->
+            <ellipse class="terminal-oval" cx="800" cy="2870" rx="80" ry="30" />
+            <text class="box-text" x="800" y="2875">END</text>
+
+            <!-- LEGEND -->
+            <g id="legend">
+                <rect fill="white" stroke="#000" stroke-width="2" x="50" y="2950" width="1500" height="180" />
+                <text class="title-text" x="800" y="2980">WORKFLOW DIAGRAM LEGEND</text>
+
+                <!-- Process -->
+                <rect class="process-box" x="80" y="3000" width="120" height="40" rx="5" />
+                <text class="legend-text" x="210" y="3025">= Process / Action</text>
+
+                <!-- Decision -->
+                <polygon class="decision-diamond" points="400,3020 450,3040 400,3060 350,3040" />
+                <text class="legend-text" x="470" y="3045">= Decision Point</text>
+
+                <!-- Terminal -->
+                <ellipse class="terminal-oval" cx="740" cy="3040" rx="60" ry="20" />
+                <text class="legend-text" x="820" y="3045">= Start / End</text>
+
+                <!-- Data -->
+                <rect class="data-box" x="80" y="3070" width="120" height="40" rx="5" />
+                <text class="legend-text" x="210" y="3095">= Database Operation</text>
+
+                <!-- External -->
+                <rect class="external-box" x="380" y="3070" width="120" height="40" rx="5" />
+                <text class="legend-text" x="510" y="3095">= External Service (Twilio)</text>
+
+                <!-- Arrow -->
+                <line class="arrow-line" x1="740" y1="3090" x2="800" y2="3090" />
+                <text class="legend-text" x="820" y="3095">= Flow Direction</text>
+            </g>
+        </svg>
+    </div>
+</body>
+
+</html>

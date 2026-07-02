@@ -25,6 +25,7 @@ app.use('/api/camps', require('./routes/camps'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/ai', require('./routes/ai'));
 app.use('/api/webhook', require('./routes/webhook'));
+app.use('/api/notifications', require('./routes/notifications'));
 
 // Health check
 app.get('/api/health', (req, res) => {

@@ -60,7 +60,7 @@ router.post('/', async (req, res) => {
 
     // Get coordinates
     const coords = await geocodeAddress(campAddress, cityName, state);
-    
+
     const camp = await Camp.create({
       organizationType,
       organizationName,
@@ -89,6 +89,9 @@ router.post('/', async (req, res) => {
       camp
     });
   } catch (error) {
+    if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(400).json({ message: 'Validation error', errors: error.errors.map(e => e.message) });
+    }
     console.error('Camp registration error:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
